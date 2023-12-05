@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tic tac toe</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+      body {
+        height: 100vh;
+        background: linear-gradient(135deg, purple, pink);
+      }
+      html {
+        font-size: 16px;
+      }
+      .wrapper {
+        position: absolute;
+        transform: (-50%, -50%);
+        left: 15%;
+        top: 15%;
+      }
+      .container {
+        width: 60vmin;
+        height: 60vmin;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2vmin;
+      }
+      .button-option {
+        background: white;
+        height: 18vmin;
+        width: 18vmin;
+        border: none;
+        border-radius: 8px;
+        color: #d161ff;
+        font-size: 12vmin;
+      }
+      .wrapper #restart {
+        margin-top: 1.5em;
+        font-size: 1.3em;
+        padding: 1em;
+        border-radius: 8px;
+        background-color: #0a0027;
+        color: white;
+        margin-left: 200px;
+        border: none;
+      }
+      .popup {
+        background: linear-gradient(135deg, purple, pink);
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        display: flex;
+        z-index: 2;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 1em;
+      }
+      #new-game {
+        font-size: 0.6;
+        padding: 0.5em;
+        background-color: #0a0027;
+        color: white;
+      }
+      #message {
+        color: white;
+        text-align: center;
+      }
+      .popup .hide {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <button class="button-option"></button>
+        <button class="button-option"></button>
+        <button class="button-option"></button>
+        <button class="button-option"></button>
+        <button class="button-option"></button>
+        <button class="button-option"></button>
+        <button class="button-option"></button>
+        <button class="button-option"></button>
+        <button class="button-option"></button>
+      </div>
+      <button id="restart">Restart</button>
+    </div>
+    <div class="popup hide">
+      <p id="message">Sample Message</p>
+      <button id="new-game">New Game</button>
+    </div>
+    <script>
+      let btnRef = document.querySelectorAll(".button-option")
+      let popupRef = document.querySelector(".popup")
+      let newGameBtn = document.querySelector("#new-game")
+      let restartBtn = document.querySelector("#restart")
+      let msgRef = document.getElementById("message")
+
+      let winningPattern = [
+        [0, 1, 2],
+        [0, 3, 6],
+        [2, 5, 8],
+        [6, 7, 8],
+        [3, 4, 5],
+        [1, 4, 7],
+        [0, 4, 8],
+        [2, 4, 6],
+      ]
+      let xTurn = true
+      let count = 0
+
+      const disableButtons = () => {
+        btnRef.forEach((element) => (element.disabled = true))
+        popupRef.classList.remove("hide")
+      }
+      debugger
+      const enableButtons = () => {
+        btnRef.forEach((element) => {
+          element.innerText = ""
+          element.disabled = ""
+        })
+        popupRef.classList.add("hide")
+      }
+      newGameBtn.addEventListener("click", () => {
+        count = 0
+        enableButtons()
+      })
+
+      restartBtn.addEventListener("click", () => {
+        count = 0
+        enableButtons()
+      })
+
+      const winFunction = (letter) => {
+        disableButtons()
+        if (letter === "X") {
+          msgRef.innerHTML = '&#x1F389;<br> "X" Wins '
+        } else {
+          msgRef.innerHTML = "&#x1F389; <br> 'O'"
+        }
+      }
+
+      const drawFunction = () => {
+        disableButtons()
+        msgRef.innerHTML = "&#x1F60E; <br> Its's a Draw"
+      }
+      const winChecker = () => {
+        for (let i of winningPattern) {
+          let [element1, element2, element3] = [
+            btnRef[i[0]].innerHTML,
+            btnRef[i[1]].innerHTML,
+            btnRef[i[2]].innerText,
+          ]
+          if (element1 != "" && element2 != "" && element3 != "") {
+            if ((element1 == element2) == element3) {
+              winFunction(element1)
+            }
+          }
+        }
+      }
+
+      btnRef.forEach((element) => {
+        element.addEventListener("click", () => {
+          if (xTurn) {
+            xTurn = false
+            elemnt.innerText = "X"
+            element.disabled = true
+          } else {
+            xturn = true
+            element.innerHTML = "O"
+            element.disabled = true
+          }
+          count += 1
+          if (count === 9) {
+            drawFunction()
+          }
+          winChecker()
+        })
+      })
+      window.onload = enableButtons
+    </script>
+  </body>
+</html>
